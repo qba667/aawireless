@@ -146,20 +146,19 @@ namespace aawireless {
             f1x::aasdk::proto::messages::WifiInfoResponse response;
             response.set_ip_address(configuration.wifiIpAddress);
             response.set_port(configuration.wifiPort);
-            response.set_status(f1x::aasdk::proto::messages::WifiInfoResponse_Status_STATUS_SUCCESS);
+            response.set_status(f1x::aasdk::proto::messages::WifiInfoResponseStatus_Enum_STATUS_SUCCESS);
 
             sendMessage(response, 7);
         }
 
         void BluetoothService::handleWifiSecurityRequest(QByteArray &buffer, uint16_t length) {
-            f1x::aasdk::proto::messages::WifiSecurityReponse response;
+            f1x::aasdk::proto::messages::WifiSecurityResponse response;
 
             response.set_ssid(configuration.wifiSSID);
             response.set_bssid(configuration.wifiBSSID);
             response.set_key(configuration.wifiPassphrase);
-            response.set_security_mode(
-                    f1x::aasdk::proto::messages::WifiSecurityReponse_SecurityMode_WPA2_PERSONAL); //TODO: make configurable?
-            response.set_access_point_type(f1x::aasdk::proto::messages::WifiSecurityReponse_AccessPointType_STATIC);
+            response.set_security_mode(f1x::aasdk::proto::messages::WifiSecurityResponse_SecurityMode_WPA2_PERSONAL); //TODO: make configurable?
+            response.set_access_point_type(f1x::aasdk::proto::messages::WifiSecurityResponse_AccessPointType_STATIC);
 
             sendMessage(response, 3);
         }
@@ -188,9 +187,9 @@ namespace aawireless {
         }
 
         void BluetoothService::handleWifiInfoRequestResponse(QByteArray &buffer, uint16_t length) {
-            f1x::aasdk::proto::messages::WifiInfoResponse msg;
+            f1x::aasdk::proto::messages::WifiSecurityResponse msg;
             msg.ParseFromArray(buffer.data() + 4, length);
-            AW_LOG(info) << "WifiInfoResponse: " << msg.DebugString();
+            AW_LOG(info) << "WifiSecurityResponse: " << msg.DebugString();
         }
 
         void BluetoothService::registerService(quint16 port) {

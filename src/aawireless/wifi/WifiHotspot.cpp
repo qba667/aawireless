@@ -34,10 +34,10 @@ namespace aawireless {
             WirelessDevice::Ptr wifiDevice;
             auto deviceName = QString::fromStdString(configuration.wifiDevice);
             Device::List deviceList = NetworkManager::networkInterfaces();
-
             if (!configuration.wifiDevice.empty()) {
                 for (auto dev : deviceList) {
-                    if (dev->type() == Device::Wifi && dev->interfaceName() == deviceName) {
+                    if (dev->type() != Device::Wifi) continue;
+		            if (dev->interfaceName() == deviceName) {
                         wifiDevice = qobject_cast<WirelessDevice *>(dev);
                         break;
                     }
